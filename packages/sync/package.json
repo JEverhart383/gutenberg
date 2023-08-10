@@ -28,18 +28,16 @@
 	"sideEffects": false,
 	"dependencies": {
 		"@babel/runtime": "^7.16.0",
-		"y-indexeddb": "~9.0.11",
-		"y-webrtc": "~10.2.5",
-		"yjs": "~13.6.6",
+		"@types/simple-peer": "^9.11.5",
+		"@wordpress/url": "file:../url",
 		"lib0": "^0.2.42",
-		"y-protocols": "^1.0.5",
 		"simple-peer": "^9.11.0",
-		"@wordpress/url": "file:../url"
+		"y-indexeddb": "~9.0.11",
+		"y-protocols": "^1.0.5",
+		"y-webrtc": "~10.2.5",
+		"yjs": "~13.6.6"
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"devDependencies": {
-		"@types/simple-peer": "^9.11.5"
 	}
 }
