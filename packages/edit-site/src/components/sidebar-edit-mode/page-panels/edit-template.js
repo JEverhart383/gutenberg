@@ -5,7 +5,11 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { BlockContextProvider, BlockPreview } from '@wordpress/block-editor';
-import { Button, __experimentalVStack as VStack } from '@wordpress/components';
+import {
+	Button,
+	__experimentalVStack as VStack,
+	ToggleControl,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { store as coreStore } from '@wordpress/core-data';
 import { parse } from '@wordpress/blocks';
@@ -16,28 +20,37 @@ import { parse } from '@wordpress/blocks';
 import { store as editSiteStore } from '../../../store';
 
 export default function EditTemplate() {
-	const { context, hasResolved, template } = useSelect( ( select ) => {
-		const { getEditedPostContext, getEditedPostType, getEditedPostId } =
-			select( editSiteStore );
-		const { getEditedEntityRecord, hasFinishedResolution } =
-			select( coreStore );
-		const _context = getEditedPostContext();
-		const queryArgs = [
-			'postType',
-			getEditedPostType(),
-			getEditedPostId(),
-		];
-		return {
-			context: _context,
-			hasResolved: hasFinishedResolution(
-				'getEditedEntityRecord',
-				queryArgs
-			),
-			template: getEditedEntityRecord( ...queryArgs ),
-		};
-	}, [] );
+	const { context, hasResolved, template, pageContentFocusMode } = useSelect(
+		( select ) => {
+			const {
+				getEditedPostContext,
+				getEditedPostType,
+				getEditedPostId,
+				getPageContentFocusMode,
+			} = select( editSiteStore );
+			const { getEditedEntityRecord, hasFinishedResolution } =
+				select( coreStore );
+			const _context = getEditedPostContext();
+			const queryArgs = [
+				'postType',
+				getEditedPostType(),
+				getEditedPostId(),
+			];
+			return {
+				context: _context,
+				hasResolved: hasFinishedResolution(
+					'getEditedEntityRecord',
+					queryArgs
+				),
+				template: getEditedEntityRecord( ...queryArgs ),
+				pageContentFocusMode: getPageContentFocusMode(),
+			};
+		},
+		[]
+	);
 
-	const { setHasPageContentFocus } = useDispatch( editSiteStore );
+	const { setHasPageContentFocus, setPageContentFocusMode } =
+		useDispatch( editSiteStore );
 
 	const blockContext = useMemo(
 		() => ( { ...context, postType: null, postId: null } ),
@@ -72,6 +85,18 @@ export default function EditTemplate() {
 			>
 				{ __( 'Edit template' ) }
 			</Button>
+			<ToggleControl
+				label={ __( 'Show template' ) }
+				checked={ pageContentFocusMode === 'withTemplate' }
+				onChange={ () => {
+					setPageContentFocusMode(
+						pageContentFocusMode === 'withTemplate'
+							? 'withoutTemplate'
+							: 'withTemplate'
+					);
+				} }
+				__nextHasNoMarginBottom
+			/>
 		</VStack>
 	);
 }
