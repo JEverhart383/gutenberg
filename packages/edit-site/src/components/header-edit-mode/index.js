@@ -216,6 +216,8 @@ export default function HeaderEditMode() {
 									showIconLabels ? shortLabel : longLabel
 								}
 								showTooltip={ ! showIconLabels }
+								aria-haspopup="true"
+								aria-expanded={ isInserterOpen }
 							/>
 						) }
 						{ isLargeViewport && (

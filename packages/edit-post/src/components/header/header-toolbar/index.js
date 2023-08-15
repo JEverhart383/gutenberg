@@ -148,6 +148,8 @@ function HeaderToolbar() {
 					icon={ plus }
 					label={ showIconLabels ? shortLabel : longLabel }
 					showTooltip={ ! showIconLabels }
+					aria-haspopup="true"
+					aria-expanded={ isInserterOpened }
 				/>
 				{ ( isWideViewport || ! showIconLabels ) && (
 					<>
