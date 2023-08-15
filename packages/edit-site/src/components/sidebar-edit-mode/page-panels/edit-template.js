@@ -20,13 +20,13 @@ import { parse } from '@wordpress/blocks';
 import { store as editSiteStore } from '../../../store';
 
 export default function EditTemplate() {
-	const { context, hasResolved, template, pageContentFocusMode } = useSelect(
+	const { context, hasResolved, template, pageContentFocusType } = useSelect(
 		( select ) => {
 			const {
 				getEditedPostContext,
 				getEditedPostType,
 				getEditedPostId,
-				getPageContentFocusMode,
+				getPageContentFocusType,
 			} = select( editSiteStore );
 			const { getEditedEntityRecord, hasFinishedResolution } =
 				select( coreStore );
@@ -43,13 +43,13 @@ export default function EditTemplate() {
 					queryArgs
 				),
 				template: getEditedEntityRecord( ...queryArgs ),
-				pageContentFocusMode: getPageContentFocusMode(),
+				pageContentFocusType: getPageContentFocusType(),
 			};
 		},
 		[]
 	);
 
-	const { setHasPageContentFocus, setPageContentFocusMode } =
+	const { setHasPageContentFocus, setPageContentFocusType } =
 		useDispatch( editSiteStore );
 
 	const blockContext = useMemo(
@@ -87,12 +87,12 @@ export default function EditTemplate() {
 			</Button>
 			<ToggleControl
 				label={ __( 'Show template' ) }
-				checked={ pageContentFocusMode === 'withTemplate' }
+				checked={ pageContentFocusType === 'disableTemplate' }
 				onChange={ () => {
-					setPageContentFocusMode(
-						pageContentFocusMode === 'withTemplate'
-							? 'withoutTemplate'
-							: 'withTemplate'
+					setPageContentFocusType(
+						pageContentFocusType === 'disableTemplate'
+							? 'hideTemplate'
+							: 'disableTemplate'
 					);
 				} }
 				__nextHasNoMarginBottom

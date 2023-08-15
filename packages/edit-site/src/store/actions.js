@@ -578,20 +578,29 @@ export const switchEditorMode =
  */
 export const setHasPageContentFocus =
 	( hasPageContentFocus ) =>
-	( { dispatch } ) => {
-		dispatch.setPageContentFocusMode(
-			hasPageContentFocus ? 'withTemplate' : null
-		);
-	};
-
-export const setPageContentFocusMode =
-	( pageContentFocusMode ) =>
 	( { dispatch, registry } ) => {
-		if ( pageContentFocusMode ) {
+		if ( hasPageContentFocus ) {
 			registry.dispatch( blockEditorStore ).clearSelectedBlock();
 		}
 		dispatch( {
-			type: 'SET_PAGE_CONTENT_FOCUS_MODE',
-			pageContentFocusMode,
+			type: 'SET_HAS_PAGE_CONTENT_FOCUS',
+			hasPageContentFocus,
 		} );
 	};
+
+/**
+ * Sets the type of page content focus. Can be one of:
+ *
+ * - `'disableTemplate'`: Disable the blocks belonging to the page's template.
+ * - `'hideTemplate'`: Hide the blocks belonging to the page's template.
+ *
+ * @param {'disbleTemplate'|'hideTemplate'} pageContentFocusType The type of page content focus.
+ *
+ * @return {Object} Action object.
+ */
+export function setPageContentFocusType( pageContentFocusType ) {
+	return {
+		type: 'SET_PAGE_CONTENT_FOCUS_TYPE',
+		pageContentFocusType,
+	};
+}
